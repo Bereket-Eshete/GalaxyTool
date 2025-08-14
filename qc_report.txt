@@ -1,0 +1,4 @@
+Initial SNPs: 2000
+SNPs after missingness filter: 2000
+SNPs after MAF filter: 2000
+Samples retained: 200

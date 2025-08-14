@@ -1,0 +1,38 @@
+<tool id="snp_sample_qc" name="SNP and Sample QC" version="1.0.0">
+    <description>Filter genotypes by MAF and missingness thresholds.</description>
+    <command>
+        python snp_sample_qc.py
+        "$genotypes"
+        "$snp_annotation"
+        "$output_geno"
+        "$output_snp"
+        "$output_samples"
+        "$qc_report"
+        "$maf_thresh"
+        "$snp_miss_thresh"
+        "$sample_miss_thresh"
+        "$missing_code"
+    </command>
+    <inputs>
+        <param name="genotypes" type="data" format="tsv" label="Genotypes TSV"/>
+        <param name="snp_annotation" type="data" format="tsv" label="SNP Annotation TSV"/>
+        <param name="maf_thresh" type="float" value="0.01" label="MAF Threshold"/>
+        <param name="snp_miss_thresh" type="float" value="0.05" label="SNP Missingness Threshold"/>
+        <param name="sample_miss_thresh" type="float" value="0.1" label="Sample Missingness Threshold"/>
+        <param name="missing_code" type="text" value="NA" label="Missing Value Code"/>
+    </inputs>
+    <outputs>
+        <data name="output_geno" format="tsv" label="Filtered Genotypes"/>
+        <data name="output_snp" format="tsv" label="Filtered SNP Annotation"/>
+        <data name="output_samples" format="tsv" label="Filtered Samples"/>
+        <data name="qc_report" format="txt" label="QC Report"/>
+    </outputs>
+    <help>
+        **Inputs:**
+        - Genotypes: TSV with samples as rows and SNPs as columns (0/1/2).
+        - SNP Annotation: TSV with columns: snp_id, chrom, pos, maf.
+
+        **Outputs:**
+        - Filtered versions of inputs and a summary report.
+    </help>
+</tool>
