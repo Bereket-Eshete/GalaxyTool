@@ -1,0 +1,35 @@
+<tool id="logistic_regression" name="GWAS Logistic Regression" version="1.0.0">
+    <description>Perform SNP-wise logistic regression for binary traits.</description>
+    <command>
+        python logistic_regression.py
+        "$genotypes"
+        "$phenotypes"
+        "$output_tsv"
+        "$covariates"
+        "$maf_thresh"
+        "$missing_code"
+        #if $snp_annotation
+            "$snp_annotation"
+        #end if
+    </command>
+    <inputs>
+        <param name="genotypes" type="data" format="tsv" label="Genotypes TSV"/>
+        <param name="phenotypes" type="data" format="tsv" label="Phenotypes/Covariates TSV"/>
+        <param name="covariates" type="text" value="age,sex" label="Covariates (comma-separated)"/>
+        <param name="maf_thresh" type="float" value="0.01" label="MAF Threshold"/>
+        <param name="missing_code" type="text" value="NA" label="Missing Value Code"/>
+        <param name="snp_annotation" type="data" format="tsv" optional="true" label="SNP Annotation TSV"/>
+    </inputs>
+    <outputs>
+        <data name="output_tsv" format="tsv" label="Association Results"/>
+    </outputs>
+    <help>
+        **Inputs:**
+        - Genotypes: Samples × SNPs matrix (0/1/2).
+        - Phenotypes: Columns must include 'sample_id' and 'phenotype'.
+        - Covariates: Comma-separated (e.g., "age,sex").
+
+        **Output:**
+        - Association results with SNP IDs, effect sizes, and p-values.
+    </help>
+</tool>
