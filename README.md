@@ -57,7 +57,8 @@ cd gwas-tools
 pip install pandas numpy matplotlib seaborn statsmodels scipy
 Usage
 
-To use a specific tool, navigate to its folder and follow the instructions in the README.md file for that tool.
+To use a specific tool, navigate to its folder and follow the instructions in the README.md
+file for that tool.
 
 Example: Running Tool 1 (SNP and Sample QC)
 cd Tool1/
