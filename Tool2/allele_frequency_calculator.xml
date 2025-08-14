@@ -1,0 +1,32 @@
+<tool id="allele_frequency_calculator" name="Allele Frequency Calculator" version="1.0.0">
+    <description>Compute per-SNP allele counts and MAF.</description>
+    <command>
+        python allele_frequency_calculator.py
+        "$genotypes"
+        "$output_tsv"
+        "$missing_code"
+        #if $sample_subset
+            "$sample_subset"
+        #end if
+        #if $snp_annotation
+            "$snp_annotation"
+        #end if
+    </command>
+    <inputs>
+        <param name="genotypes" type="data" format="tsv" label="Genotypes TSV"/>
+        <param name="snp_annotation" type="data" format="tsv" optional="true" label="SNP Annotation TSV"/>
+        <param name="sample_subset" type="data" format="tsv" optional="true" label="Sample Subset TSV"/>
+        <param name="missing_code" type="text" value="NA" label="Missing Value Code"/>
+    </inputs>
+    <outputs>
+        <data name="output_tsv" format="tsv" label="Allele Frequencies"/>
+    </outputs>
+    <help>
+        **Inputs:**
+        - Genotypes: TSV with samples as rows and SNPs as columns (0/1/2).
+        - Optional: SNP annotation (chrom, pos) and sample subset lists.
+
+        **Output:**
+        - TSV with SNP ID, allele counts, MAF, and non-missing sample count.
+    </help>
+</tool>
