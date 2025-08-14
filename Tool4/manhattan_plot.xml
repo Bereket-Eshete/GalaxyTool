@@ -1,0 +1,37 @@
+<tool id="manhattan_plot" name="Manhattan Plot Generator" version="1.0.0">
+    <description>Create a Manhattan plot from GWAS results</description>
+    <command>
+        python manhattan_plot.py
+        "$assoc_results"
+        "$output_plot"
+        "$output_top_hits"
+        "$p_threshold"
+        "$top_n"
+        #if $snp_annotation
+            "$snp_annotation"
+        #end if
+    </command>
+    <inputs>
+        <param name="assoc_results" type="data" format="tsv" label="Association Results (from Tool 3)"/>
+        <param name="p_threshold" type="float" value="5e-8" label="P-value Significance Threshold"/>
+        <param name="top_n" type="integer" value="20" label="Number of Top Hits to Report"/>
+        <param name="snp_annotation" type="data" format="tsv" optional="true" label="Optional: SNP Annotation TSV"/>
+    </inputs>
+    <outputs>
+        <data name="output_plot" format="png" label="Manhattan Plot"/>
+        <data name="output_top_hits" format="tsv" label="Top ${top_n} GWAS Hits"/>
+    </outputs>
+    <help>
+        **Input Requirements:**
+        - Association results must contain: snp_id, chrom, pos, p_value
+        - Optional SNP annotation can provide additional metadata
+
+        **Outputs:**
+        - PNG: Manhattan plot with significance threshold
+        - TSV: Top N most significant SNPs
+    </help>
+</tool>
+    <requirements>
+        <requirement type="package" version="1.0">matplotlib</requirement>
+        <requirement type="package" version="1.0">pandas</requirement>
+    </requirements>
