@@ -1,17 +1,25 @@
+#!/usr/bin/env python3
 import pandas as pd
 import numpy as np
 import statsmodels.api as sm
 import sys
+import os
 
 def main():
     # Parse arguments
     genotypes_path = sys.argv[1]
     phenotypes_path = sys.argv[2]
-    output_tsv = sys.argv[3]
+    output_dir = sys.argv[3]  # Directory for outputs
     covariates = sys.argv[4].split(',') if sys.argv[4] != 'NA' else []
     maf_thresh = float(sys.argv[5])
     missing_code = sys.argv[6]
     snp_annot_path = sys.argv[7]  # Now REQUIRED
+
+    # Ensure the output directory exists
+    os.makedirs(output_dir, exist_ok=True)
+
+    # Define output path
+    output_tsv = os.path.join(output_dir, "logistic_regression_results.tsv")
 
     # Load data
     genotypes = pd.read_csv(genotypes_path, sep='\t', index_col=0)
@@ -68,7 +76,9 @@ def main():
         })
 
     # Save output
-    pd.DataFrame(results).to_csv(output_tsv, sep='\t', index=False)
+    result_df = pd.DataFrame(results)
+    result_df.to_csv(output_tsv, sep='\t', index=False)
+    print(f"Output saved to {output_tsv}")
 
 if __name__ == "__main__":
     main()

@@ -9,8 +9,7 @@
         '$window_kb'
         '$min_maf'
         '$missing_code'
-        '$output_matrix'
-        '$output_heatmap'
+        '$output_dir'
         ]]>
     </command>
     <inputs>
@@ -22,8 +21,8 @@
         <param name="missing_code" type="text" value="NA" label="Missing Value Code" help="Code used to represent missing values in the genotype data"/>
     </inputs>
     <outputs>
-        <data name="output_matrix" format="tsv" label="LD Matrix"/>
-        <data name="output_heatmap" format="png" label="LD Heatmap"/>
+        <data name="output_matrix" format="tsv" from_work_dir="sample_outputs/ld_matrix.tsv" label="LD Matrix"/>
+        <data name="output_heatmap" format="png" from_work_dir="sample_outputs/ld_heatmap.png" label="LD Heatmap"/>
     </outputs>
     <requirements>
         <requirement type="package" version="3.4.3">matplotlib</requirement>
@@ -45,14 +44,3 @@
         - LD Heatmap: Visualization of the LD matrix
     </help>
 </tool>
-    <description>Calculate pairwise linkage disequilibrium (LD) for SNPs in a specified genomic window.</description>
-    <help>
-        **Input Requirements:**
-        - Genotypes must be in a samples × SNPs format with 0/1/2 coding.
-        - SNP annotation must include: snp_id, chrom, pos, maf.
-        - Focal SNP can be specified by ID or genomic coordinates.
-
-        **Outputs:**
-        - TSV: LD matrix with pairwise r² values.
-        - PNG: Heatmap visualization of the LD matrix.
-    </help>

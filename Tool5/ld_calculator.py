@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import sys
 from scipy.stats import pearsonr
+import os
 
 def calculate_ld(genotypes):
     """Calculate pairwise r² for all SNPs"""
@@ -31,29 +32,37 @@ def calculate_ld(genotypes):
 def main():
     # Verify arguments
     if len(sys.argv) != 9:
-        print("Usage: python ld_calculator.py <genotypes> <snp_annot> <focal_snp> <window_kb> <min_maf> <missing_code> <output_matrix> <output_heatmap>")
+        print("Usage: python ld_calculator.py <genotypes> <snp_annot> <focal_snp> <window_kb> <min_maf> <missing_code> <output_dir>")
         sys.exit(1)
 
     try:
+        # Parse arguments
+        genotypes_path = sys.argv[1]
+        snp_annot_path = sys.argv[2]
+        focal_snp = sys.argv[3]
+        window_kb = float(sys.argv[4])
+        min_maf = float(sys.argv[5])
+        missing_code = sys.argv[6]
+        output_dir = sys.argv[7]  # Directory for outputs
+
+        # Ensure the output directory exists
+        os.makedirs(output_dir, exist_ok=True)
+
+        # Define output paths
+        output_matrix = os.path.join(output_dir, "ld_matrix.tsv")
+        output_heatmap = os.path.join(output_dir, "ld_heatmap.png")
+
         # Load data
-        genotypes = pd.read_csv(sys.argv[1], sep='\t', index_col=0, dtype=str)
+        genotypes = pd.read_csv(genotypes_path, sep='\t', index_col=0, dtype=str)
         
         # Load SNP annotation file
-        snp_annot = pd.read_csv(sys.argv[2], sep='\t')
+        snp_annot = pd.read_csv(snp_annot_path, sep='\t')
         snp_annot.columns = snp_annot.columns.str.strip()  # Clean column names
         snp_annot = snp_annot.astype({'snp_id': str, 'chrom': str, 'pos': int, 'maf': float})  # Set dtypes
         
         # Debugging output
         print("Column names in snp_annotation.tsv:", snp_annot.columns.tolist())
         
-        # Parse arguments
-        focal_snp = sys.argv[3]
-        window_kb = float(sys.argv[4])
-        min_maf = float(sys.argv[5])
-        missing_code = sys.argv[6]
-        output_matrix = sys.argv[7]
-        output_heatmap = sys.argv[8]
-
         # Get focal SNP position
         focal_match = snp_annot[snp_annot['snp_id'] == focal_snp]
         if focal_match.empty:

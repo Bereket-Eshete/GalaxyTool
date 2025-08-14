@@ -1,15 +1,23 @@
+#!/usr/bin/env python3
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import sys
+import os
 
 def main():
     # Parse arguments
     assoc_results_path = sys.argv[1]
-    output_plot = sys.argv[2]
-    output_top_hits = sys.argv[3]
-    p_threshold = float(sys.argv[4])
-    top_n = int(sys.argv[5])
+    output_dir = sys.argv[2]  # Directory for outputs
+    p_threshold = float(sys.argv[3])
+    top_n = int(sys.argv[4])
+
+    # Ensure the output directory exists
+    os.makedirs(output_dir, exist_ok=True)
+
+    # Define output paths
+    output_plot = os.path.join(output_dir, "manhattan_plot.png")
+    output_top_hits = os.path.join(output_dir, "top_hits.tsv")
 
     # Load data
     assoc = pd.read_csv(assoc_results_path, sep='\t')
@@ -77,6 +85,7 @@ def main():
     # Save top hits
     top_hits = assoc.sort_values('p_value').head(top_n)
     top_hits.to_csv(output_top_hits, sep='\t', index=False)
+    print(f"Outputs saved to {output_dir}")
 
 if __name__ == "__main__":
     main()

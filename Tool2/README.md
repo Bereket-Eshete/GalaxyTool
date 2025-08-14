@@ -25,7 +25,7 @@ This tool calculates allele counts and minor allele frequencies (MAF) for each S
 Run the tool using the following command:
 
 ```bash
-python allele_frequency_calculator.py \
+python Tool2/allele_frequency_calculator.py \
     gwas_data/genotypes.tsv \
     Tool2/sample_outputs/ \
     NA \

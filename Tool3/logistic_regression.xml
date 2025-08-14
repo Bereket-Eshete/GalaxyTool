@@ -1,35 +1,43 @@
-<tool id="logistic_regression" name="GWAS Logistic Regression" version="2.0.0">
+<tool id="logistic_regression" name="Logistic Regression" version="1.0.0">
+    <description>Perform logistic regression for each SNP.</description>
     <command>
-        python logistic_regression.py
-        "$genotypes"
-        "$phenotypes"
-        "$output_tsv"
-        "$covariates"
-        "$maf_thresh"
-        "$missing_code"
-        "$snp_annotation"  <!-- Now REQUIRED -->
+        <![CDATA[
+        python '$__tool_directory__/logistic_regression.py'
+        '$genotypes'
+        '$phenotypes'
+        '$output_dir'
+        '$covariates'
+        '$maf_thresh'
+        '$missing_code'
+        '$snp_annotation'
+        ]]>
     </command>
     <inputs>
         <param name="genotypes" type="data" format="tsv" label="Genotypes TSV"/>
         <param name="phenotypes" type="data" format="tsv" label="Phenotypes TSV"/>
-        <param name="snp_annotation" type="data" format="tsv" label="SNP Annotation TSV (must contain: chrom, pos, maf)"/>
-        <param name="covariates" type="text" value="age,sex" label="Covariates (comma-separated)"/>
+        <param name="covariates" type="text" value="NA" label="Covariates (comma-separated)" help="Optional covariates column names"/>
         <param name="maf_thresh" type="float" value="0.01" label="MAF Threshold"/>
         <param name="missing_code" type="text" value="NA" label="Missing Value Code"/>
+        <param name="snp_annotation" type="data" format="tsv" label="SNP Annotation TSV"/>
     </inputs>
     <outputs>
-        <data name="output_tsv" format="tsv" label="Association Results"/>
+        <data name="output_tsv" format="tsv" from_work_dir="sample_outputs/logistic_regression_results.tsv" label="Logistic Regression Results"/>
     </outputs>
     <help>
-        **Input Requirements:**
-        - SNP annotation must include: snp_id, chrom, pos, maf.
-        - Genotypes: 0/1/2 coded, samples × SNPs.
-        - Phenotypes: binary (0/1) with covariates.
+        **Inputs:**
+        - Genotypes: TSV with samples as rows and SNPs as columns (0/1/2).
+        - Phenotypes: TSV with `sample_id` and `phenotype` columns.
+        - Covariates: Optional comma-separated list of covariate column names.
+        - MAF Threshold: Minimum minor allele frequency (default = 0.01).
+        - Missing Value Code: Code used to represent missing values (default = "NA").
+        - SNP Annotation: TSV with SNP metadata (`snp_id`, `chrom`, `pos`, `maf`).
+
+        **Output:**
+        - TSV with SNP ID, chromosome, position, beta, standard error, z-score, p-value, and MAF.
     </help>
-</tool>
-    <description>Perform logistic regression for GWAS analysis.</description>
     <requirements>
-        <requirement type="package" version="1.0">numpy</requirement>
-        <requirement type="package" version="1.0">pandas</requirement>
-        <requirement type="package" version="1.0">statsmodels</requirement>
+        <requirement type="package" version="0.13.5">statsmodels</requirement>
+        <requirement type="package" version="1.3.0">pandas</requirement>
+        <requirement type="package" version="1.21.0">numpy</requirement>
     </requirements>
+</tool>
