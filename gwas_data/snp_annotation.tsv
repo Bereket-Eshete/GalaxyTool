@@ -1,4 +1,4 @@
-snp_id	chrom	pos	maf
+snp_id	  chrom	  pos	  maf
 rs100000	9	100000	0.3057
 rs100001	15	100100	0.0922
 rs100002	4	100200	0.2155

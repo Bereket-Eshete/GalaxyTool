@@ -1,0 +1,58 @@
+<tool id="ld_calculator" name="Windowed LD Calculator" version="2.0.0">
+    <description>Compute LD matrix for SNPs within a genomic window</description>
+    <command detect_errors="exit_code">
+        <![CDATA[
+        python '$__tool_directory__/ld_calculator.py'
+        '$genotypes'
+        '$snp_annotation'
+        '$focal_snp_or_region'
+        '$window_kb'
+        '$min_maf'
+        '$missing_code'
+        '$output_matrix'
+        '$output_heatmap'
+        ]]>
+    </command>
+    <inputs>
+        <param name="genotypes" type="data" format="tsv" label="Genotypes TSV"/>
+        <param name="snp_annotation" type="data" format="tsv" label="SNP Annotation TSV"/>
+        <param name="focal_snp_or_region" type="text" label="Focal SNP ID or chrom:pos (e.g., rs100000 or 9:100000)"/>
+        <param name="window_kb" type="float" value="250" label="Window Size (kb)" help="Size of the genomic window around the focal SNP (in kilobases)"/>
+        <param name="min_maf" type="float" value="0.01" label="Minimum MAF" help="Minimum Minor Allele Frequency (MAF) threshold"/>
+        <param name="missing_code" type="text" value="NA" label="Missing Value Code" help="Code used to represent missing values in the genotype data"/>
+    </inputs>
+    <outputs>
+        <data name="output_matrix" format="tsv" label="LD Matrix"/>
+        <data name="output_heatmap" format="png" label="LD Heatmap"/>
+    </outputs>
+    <requirements>
+        <requirement type="package" version="3.4.3">matplotlib</requirement>
+        <requirement type="package" version="1.3.0">pandas</requirement>
+        <requirement type="package" version="1.3.5">scipy</requirement>
+        <requirement type="package" version="0.11.0">seaborn</requirement>
+    </requirements>
+    <help>
+        **Inputs:**
+        - Genotypes: Samples × SNPs matrix (0/1/2)
+        - SNP Annotation: Contains SNP IDs, chromosome, position, and MAF
+        - Focal SNP: Either SNP ID (rs100000) or genomic region (9:100000)
+        - Window Size: Size in kilobases around the focal SNP
+        - Minimum MAF: Minimum Minor Allele Frequency (default = 0.01)
+        - Missing Value Code: Code used to represent missing values (default = "NA")
+
+        **Outputs:**
+        - LD Matrix: Symmetric matrix of pairwise r² values
+        - LD Heatmap: Visualization of the LD matrix
+    </help>
+</tool>
+    <description>Calculate pairwise linkage disequilibrium (LD) for SNPs in a specified genomic window.</description>
+    <help>
+        **Input Requirements:**
+        - Genotypes must be in a samples × SNPs format with 0/1/2 coding.
+        - SNP annotation must include: snp_id, chrom, pos, maf.
+        - Focal SNP can be specified by ID or genomic coordinates.
+
+        **Outputs:**
+        - TSV: LD matrix with pairwise r² values.
+        - PNG: Heatmap visualization of the LD matrix.
+    </help>
